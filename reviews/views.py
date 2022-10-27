@@ -5,6 +5,8 @@ import reviews
 from .forms import ReviewForm
 from .models import Review
 
+from django.db.models import Q
+
 
 # Create your views here.
 
@@ -19,7 +21,7 @@ def index(request):
 
 def create(request):
     if request.method == "POST":
-        form = ReviewForm(request.POST)
+        form = ReviewForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect("reviews:index")
@@ -59,3 +61,20 @@ def delete(request, pk):
     review = Review.objects.get(pk=pk)
     review.delete()
     return redirect("reviews:index")
+
+
+def search(request):
+    all_data = Review.objects.order_by("-pk")
+    search = request.GET.get("search", "")
+    if search:
+        search_list = all_data.filter(
+            Q(title__icontains=search) | Q(movie_name__icontains=search)
+        )
+
+        context = {
+            "search_list": search_list,
+        }
+    else:
+        context = {}
+
+    return render(request, "reviews/search.html", context)
