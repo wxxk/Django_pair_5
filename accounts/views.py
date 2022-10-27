@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 from django.contrib.auth import login as auth_login, logout as auth_logout, get_user_model, update_session_auth_hash
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def signup(request):
@@ -31,10 +32,12 @@ def login(request):
     }
     return render(request, 'accounts/login.html', context)
 
+@login_required
 def logout(request):
     auth_logout(request)
     return redirect('accounts:login')
 
+@login_required
 def detail(request, pk):
     user = get_user_model().objects.get(pk=pk)
     context = {
@@ -42,6 +45,7 @@ def detail(request, pk):
     }
     return render(request, 'accounts/detail.html', context)
 
+@login_required
 def update(request):
     if request.method == "POST":
         form = CustomUserChangeForm(request.POST, instance=request.user)
@@ -55,6 +59,7 @@ def update(request):
     }
     return render(request, 'accounts/update.html', context)
 
+@login_required
 def password_update(request):
     if request.method == "POST":
         form = PasswordChangeForm(request.user, request.POST)
@@ -69,12 +74,14 @@ def password_update(request):
     }
     return render(request, 'accounts/password_update.html', context)
 
+@login_required
 def delete(request):
     if request.method == "POST":
         request.user.delete()
         auth_logout(request)
         return redirect('accounts:login')
 
+@login_required
 def follow(request, pk):
     user = get_user_model().objects.get(pk=pk)
     if request.user != user:
