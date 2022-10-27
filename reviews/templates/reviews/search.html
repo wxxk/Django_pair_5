@@ -2,7 +2,9 @@
 
 {% block content %}
   <h1>index</h1>
-  <a href="{% url 'reviews:create' %}">글 작성</a>
+  <a class="btn" href="{% url 'reviews:create' %}">글 작성</a>
+  <a class="btn" href="{% url 'reviews:index' %}">뒤로가기</a>
+  
 
   {% comment %} <form class="d-flex" role="search" action="{% url 'reviews:search' %}">
     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
