@@ -25,16 +25,16 @@
     </div>
 
     <!-- 좋아요 -->
-    <div id='review-like' data-review-id='{{ review.pk }}'>
+    <div>
       {% if request.user.is_authenticated %}
         {% if request.user in review.like_users.all %}
-          <i class="bi bi-heart-fill text-danger"></i>
+          <i id='review-like' data-review-id='{{ review.pk }}' class="btn bi bi-heart-fill text-danger"></i>
         {% else %}
-          <i class="bi bi-heart text-danger"></i>
+          <i id='review-like' data-review-id='{{ review.pk }}' class="btn bi bi-heart text-danger"></i>
         {% endif %}
       {% endif %}
+      <span id='like-count'>{{ review.like_users.count }}개</span>
     </div>
-    <div id='like-count'>{{ review.like_users.count }}</div>
     <div class="d-flex ms-2">
       <a class="btn" href="{% url 'reviews:update' review.pk %}">수정하기</a>
       <form action="{% url 'reviews:delete' review.pk %}" method="POST">
@@ -96,7 +96,7 @@
             .add('bi-heart')
         }
         const likeCount = document.querySelector('#like-count')
-        likeCount.innerText = response.data.likeCount
+        likeCount.innerText = `${response.data.likeCount}개`
       })
     })
   </script>
