@@ -12,7 +12,9 @@
     </div>
     <hr>
     <div class="border">
-      <img src="{{ review.image.url}}" alt="">
+      {% if review.image %}
+        <img src="{{ review.image.url}}" alt="">
+      {% endif %}
       <h3>{{ review.movie_name }}</h3>
     </div>
     <div class="container border my-2 pt-2">
