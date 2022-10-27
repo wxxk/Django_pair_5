@@ -18,21 +18,23 @@
       <h3>{{ review.movie_name }}</h3>
     </div>
     <div class="container border my-2 pt-2">
-      <h4>내용</h4>
       <p>{{ review.content }}</p>
     </div>
     <div class="container border my-2 pt-2">
       <p>평점:{{ review.get_grade_display }}</p>
     </div>
+
+    <!-- 좋아요 -->
+    {% if request.user.is_authenticated %}
+      <a class='text-danger text-decoration-none' href="{% url 'reviews:likes' review.pk%}">
+        {% if request.user in review.like_users.all %}
+          <i class="bi bi-heart-fill"></i>
+        {% else %}
+          <i class="bi bi-heart"></i>
+        {% endif %}
+      </a>
+    {% endif %}
     {{ review.like_users.count }}
-    <form action="{% url 'reviews:likes' review.pk %}" method="POST">
-      {% csrf_token %}
-      {% if request.user in review.like_users.all %}
-        <input type="submit" value="좋아요 취소">
-      {% else %}
-        <input type="submit" value="좋아요">
-      {% endif %}
-    </form>
     <div class="d-flex ms-2">
       <a class="btn" href="{% url 'reviews:update' review.pk %}">수정하기</a>
       <form action="{% url 'reviews:delete' review.pk %}" method="POST">
@@ -41,7 +43,7 @@
       </form>
       <a class="btn" href="{% url 'reviews:index' %}">뒤로가기</a>
     </div>
-    <br>
+    <hr><br>
 
     <!-- 댓글 작성 -->
     <form action="{% url 'reviews:comments_create' review.pk %}" method="POST">
