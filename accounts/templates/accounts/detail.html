@@ -19,7 +19,28 @@
     {% else %}
       <div class="d-flex">
         <a class='btn btn-outline-dark' href="{% url 'accounts:update' %}">수정</a>
-        <a class='btn btn-outline-dark mx-2' href="{% url 'accounts:delete' %}">탈퇴</a>
+        <button type="button" class="btn btn-outline-dark mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          탈퇴
+        </button>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">정말 탈퇴하시겠습니까?</h1>
+              </div>
+              <div class="modal-body">
+                탈퇴된 계정은 복구할 수 없습니다.
+              </div>
+              <div class="modal-footer">
+                <form action="{% url 'accounts:delete' %}" method="POST">
+                  {% csrf_token %}
+                  <input class='btn btn-outline-danger' type="submit" value='탈퇴'>
+                </form>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     {% endif %}
   {% endif %}

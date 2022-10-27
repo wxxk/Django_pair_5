@@ -8,7 +8,9 @@
       {{ review.title }}</h3>
     <div>
       <h3>{{ review.movie_name }}</h3>
-      <img src="{{ review.image.url}}" alt="">
+      {% if review.image %}
+        <img src="{{ review.image.url}}" alt="{{ review.image }}">
+      {% endif %}
     </div>
     <div class="container border my-2 pt-2">
       <h4>내용</h4>
