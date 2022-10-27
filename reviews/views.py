@@ -21,8 +21,10 @@ def create(request):
     if request.method == "POST":
         form = ReviewForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return redirect("reviews:index")
+            review = form.save(commit=False)
+            review.user = request.user
+            review.save()
+            return redirect("reviews:detail", review.pk)
     else:
         form = ReviewForm()
     context = {
@@ -98,3 +100,13 @@ def comments_delete(request, review_pk, comment_pk):
     if request.user == comment.user:
         comment.delete()
     return redirect("reviews:detail", review_pk)
+
+
+def likes(reqeust, review_pk):
+    review = Review.objects.get(pk=review_pk)
+
+    if reqeust.user in review.like_users.all():
+        review.like_users.remove(reqeust.user)
+    else:
+        review.like_users.add(reqeust.user)
+    return redirect("reviews:detail", review.pk)
