@@ -1,14 +1,19 @@
 {% extends 'base.html' %}
+{% load django_bootstrap5 %}
 {% block title %}detail{% endblock title %}
 {% block content %}
 
   <h2>DETAIL</h2>
   <div class="container border py-3">
-    <h3>{{ review.pk }}번째 글 | 제목
-      {{ review.title }}</h3>
-    <div>
-      <h3>{{ review.movie_name }}</h3>
+    <div class="d-flex justify-content-between">
+      <h3>{{ review.pk }}번째 글</h3>
+      <h3>{{ review.title }}</h3>
+      <h3>{{ request.user }}</h3>
+    </div>
+    <hr>
+    <div class="border">
       <img src="{{ review.image.url}}" alt="">
+      <h3>{{ review.movie_name }}</h3>
     </div>
     <div class="container border my-2 pt-2">
       <h4>내용</h4>
@@ -25,5 +30,32 @@
       </form>
       <a class="btn" href="{% url 'reviews:index' %}">뒤로가기</a>
     </div>
-  </div>
-{% endblock content %}
+    <br>
+
+    <!-- 댓글 작성 -->
+    <form action="{% url 'reviews:comments_create' review.pk %}" method="POST">
+      {% csrf_token %}
+      {% bootstrap_form comment_form %}
+      <input type="submit" class="btn">
+    </form>
+    <hr><br>
+    <!-- 댓글 목록-->
+    <h5>댓글목록</h5>
+    <br>
+    {% for comment in comments %}
+      <div class="d-flex">
+        <h5 class='ms-2'>{{ comment.user }}</h5>
+
+        <p class='ms-2'>{{ comment.create_at }}</p>
+      </div>
+      <p class='ms-2'>{{ comment.content }}</p>
+      {% if request.user == comment.user %}
+        <form action="{% url 'reviews:comments_delete' review.pk comment.pk %}" method="POST">
+          {% csrf_token %}
+          <input type="submit" class="btn" value="삭제">
+        </form>
+      {% endif %}
+      <hr>
+    {% endfor %}
+  {% endblock content %}
+</div>
