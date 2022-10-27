@@ -25,16 +25,16 @@
     </div>
 
     <!-- 좋아요 -->
-    {% if request.user.is_authenticated %}
-      <a class='text-danger text-decoration-none' href="{% url 'reviews:likes' review.pk%}">
+    <div id='review-like' data-review-id='{{ review.pk }}'>
+      {% if request.user.is_authenticated %}
         {% if request.user in review.like_users.all %}
-          <i class="bi bi-heart-fill"></i>
+          <i class="bi bi-heart-fill text-danger"></i>
         {% else %}
-          <i class="bi bi-heart"></i>
+          <i class="bi bi-heart text-danger"></i>
         {% endif %}
-      </a>
-    {% endif %}
-    {{ review.like_users.count }}
+      {% endif %}
+    </div>
+    <div id='like-count'>{{ review.like_users.count }}</div>
     <div class="d-flex ms-2">
       <a class="btn" href="{% url 'reviews:update' review.pk %}">수정하기</a>
       <form action="{% url 'reviews:delete' review.pk %}" method="POST">
@@ -70,5 +70,34 @@
       {% endif %}
       <hr>
     {% endfor %}
-  {% endblock content %}
-</div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const reviewLike = document.querySelector('#review-like')
+    reviewLike.addEventListener('click', function (event) {
+      axios({method: 'get', url: `/reviews/${event.target.dataset.reviewId}/likes/`}).then(response => {
+        if (response.data.isLiked === true) {
+          event
+            .target
+            .classList
+            .remove('bi-heart')
+          event
+            .target
+            .classList
+            .add('bi-heart-fill')
+        } else {
+          event
+            .target
+            .classList
+            .remove('bi-heart-fill')
+          event
+            .target
+            .classList
+            .add('bi-heart')
+        }
+        const likeCount = document.querySelector('#like-count')
+        likeCount.innerText = response.data.likeCount
+      })
+    })
+  </script>
+{% endblock content %}

@@ -6,6 +6,7 @@ from reviews.models import Review, Comment
 from django.db.models import Q
 
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -115,6 +116,12 @@ def likes(reqeust, review_pk):
 
     if reqeust.user in review.like_users.all():
         review.like_users.remove(reqeust.user)
+        is_Liked = False
     else:
         review.like_users.add(reqeust.user)
-    return redirect("reviews:detail", review.pk)
+        is_Liked = True
+    context = {
+        'isLiked': is_Liked,
+        'likeCount': review.like_users.count()
+    }
+    return JsonResponse(context)
