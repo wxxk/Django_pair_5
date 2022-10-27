@@ -6,7 +6,10 @@
   <div class="container border py-3">
     <h3>{{ review.pk }}번째 글 | 제목
       {{ review.title }}</h3>
-    <h3>{{review.movie_name}}</h3>
+    <div>
+      <h3>{{ review.movie_name }}</h3>
+      <img src="{{ review.image.url}}" alt="">
+    </div>
     <div class="container border my-2 pt-2">
       <h4>내용</h4>
       <p>{{ review.content }}</p>
