@@ -8,7 +8,7 @@
     <div class="d-flex justify-content-between">
       <h3>{{ review.pk }}번째 글</h3>
       <h3>{{ review.title }}</h3>
-      <h3>{{ request.user }}</h3>
+      <h3>{{ review.user }}</h3>
     </div>
     <hr>
     <div class="border">
@@ -24,6 +24,15 @@
     <div class="container border my-2 pt-2">
       <p>평점:{{ review.get_grade_display }}</p>
     </div>
+    {{ review.like_users.count }}
+    <form action="{% url 'reviews:likes' review.pk %}" method="POST">
+      {% csrf_token %}
+      {% if request.user in review.like_users.all %}
+        <input type="submit" value="좋아요 취소">
+      {% else %}
+        <input type="submit" value="좋아요">
+      {% endif %}
+    </form>
     <div class="d-flex ms-2">
       <a class="btn" href="{% url 'reviews:update' review.pk %}">수정하기</a>
       <form action="{% url 'reviews:delete' review.pk %}" method="POST">
