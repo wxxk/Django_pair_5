@@ -1,6 +1,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>index
-  </h1>
+  <h1>index</h1>
+  <a href="{% url 'reviews:create' %}">글 작성</a>
+
+  <table class="table text-center">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">글 제목</th>
+        <th scope="col">영화 제목</th>
+        <th scope="col">평점</th>
+        <th scope="col">비고</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for review in reviews %}
+        <tr>
+          <th scope="row">{{ review.pk }}</th>
+          <td>{{ review.title }}</td>
+          <td>{{ review.movie_name }}</td>
+          <td>{{ review.get_grade_display  }}</td>
+          <td>
+            <a href="{% url 'reviews:detail' review.pk %}">자세히</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock content %}
