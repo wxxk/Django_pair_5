@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% block content %}
+  <h1>{{ user.username }}
+    님의 페이지</h1>
+  <h3>이름 :
+    {{ user.last_name }}{{ user.first_name }}</h3>
+  <h3>이메일 :
+    {{ user.email }}</h3>
+  {% if request.user.is_authenticated %}
+    {% if request.user != user %}
+      <a class='btn btn-outline-dark' href="{% url 'accounts:follow' user.pk %}">
+        {% if request.user in user.followers.all %}
+          팔로우 취소
+        {% else %}
+          팔로우
+        {% endif %}
+      </a>
+    {% else %}
+      <div class="d-flex">
+        <a class='btn btn-outline-dark' href="{% url 'accounts:update' %}">수정</a>
+        <a class='btn btn-outline-dark mx-2' href="{% url 'accounts:delete' %}">탈퇴</a>
+      </div>
+    {% endif %}
+  {% endif %}
+{% endblock content %}
