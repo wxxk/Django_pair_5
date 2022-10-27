@@ -7,6 +7,7 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = "__all__"
+        exclude = ("user", "like_users")
 
 
 class CommentForm(forms.ModelForm):

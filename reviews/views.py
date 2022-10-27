@@ -5,6 +5,7 @@ from reviews.models import Review, Comment
 
 from django.db.models import Q
 
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -17,6 +18,7 @@ def index(request):
     return render(request, "reviews/index.html", context)
 
 
+@login_required
 def create(request):
     if request.method == "POST":
         form = ReviewForm(request.POST, request.FILES)
@@ -33,6 +35,7 @@ def create(request):
     return render(request, "reviews/create.html", context)
 
 
+@login_required
 def detail(request, pk):
     review = Review.objects.get(pk=pk)
     comment_form = CommentForm()
@@ -45,6 +48,7 @@ def detail(request, pk):
     return render(request, "reviews/detail.html", context)
 
 
+@login_required
 def update(request, pk):
     review = Review.objects.get(pk=pk)
     if request.method == "POST":
@@ -61,6 +65,7 @@ def update(request, pk):
     return render(request, "reviews/update.html", context)
 
 
+@login_required
 def delete(request, pk):
     review = Review.objects.get(pk=pk)
     review.delete()
@@ -84,6 +89,7 @@ def search(request):
     return render(request, "reviews/search.html", context)
 
 
+@login_required
 def comments_create(request, pk):
     review = Review.objects.get(pk=pk)
     comment_form = CommentForm(request.POST)
@@ -95,6 +101,7 @@ def comments_create(request, pk):
     return redirect("reviews:detail", review.pk)
 
 
+@login_required
 def comments_delete(request, review_pk, comment_pk):
     comment = Comment.objects.get(pk=comment_pk)
     if request.user == comment.user:
@@ -102,6 +109,7 @@ def comments_delete(request, review_pk, comment_pk):
     return redirect("reviews:detail", review_pk)
 
 
+@login_required
 def likes(reqeust, review_pk):
     review = Review.objects.get(pk=review_pk)
 
