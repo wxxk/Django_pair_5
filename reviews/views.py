@@ -1,9 +1,7 @@
 from django.shortcuts import render, redirect
 
-import reviews
-
-from .forms import ReviewForm
-from .models import Review
+from .forms import ReviewForm, CommentForm
+from reviews.models import Review, Comment
 
 from django.db.models import Q
 
@@ -35,8 +33,12 @@ def create(request):
 
 def detail(request, pk):
     review = Review.objects.get(pk=pk)
+    comment_form = CommentForm()
+    comments = review.comment_set.all()
     context = {
         "review": review,
+        "comment_form": comment_form,
+        "comments": comments,
     }
     return render(request, "reviews/detail.html", context)
 
@@ -78,3 +80,21 @@ def search(request):
         context = {}
 
     return render(request, "reviews/search.html", context)
+
+
+def comments_create(request, pk):
+    review = Review.objects.get(pk=pk)
+    comment_form = CommentForm(request.POST)
+    if comment_form.is_valid():
+        comment = comment_form.save(commit=False)
+        comment.review = review
+        comment.user = request.user
+        comment.save()
+    return redirect("reviews:detail", review.pk)
+
+
+def comments_delete(request, review_pk, comment_pk):
+    comment = Comment.objects.get(pk=comment_pk)
+    if request.user == comment.user:
+        comment.delete()
+    return redirect("reviews:detail", review_pk)
