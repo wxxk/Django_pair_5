@@ -1,21 +1,93 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
 {% block content %}
-  <h1>{{ user.username }}
+
+  <div class="card text-center">
+    <div class="card-header">
+      {{ user.username }}님의 페이지
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">이름 :
+        {{ user.last_name }}{{ user.first_name }}</h5>
+      <p class="card-text">이메일 :
+        {{ user.email }}</p>
+      <div class='my-3'>
+        follower :
+        <span id="followers-count">{{ user.followers.all|length }}</span>
+        | following :
+        <span id="followings-count">{{ user.followings.all|length }}</span>
+      </div>
+
+      {% if request.user.is_authenticated %}
+        {% if request.user != user %}
+          <form id="follow-form" data-user-id="{{ user.pk }}" class="text-center">
+            {% csrf_token %}
+            {% if request.user in user.followers.all %}
+              <input class="btn btn-outline-dark" type="submit" value="Unfollow">
+            {% else %}
+              <input class="btn btn-outline-dark" type="submit" value="follow">
+            {% endif %}
+          </form>
+        {% else %}
+          <div class="d-flex justify-content-center">
+            <a class='btn btn-outline-dark' href="{% url 'accounts:update' %}">수정</a>
+            <button type="button" class="btn btn-outline-dark mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              탈퇴
+            </button>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">정말 탈퇴하시겠습니까?</h1>
+                  </div>
+                  <div class="modal-body">
+                    탈퇴된 계정은 복구할 수 없습니다.
+                  </div>
+                  <div class="modal-footer">
+                    <form action="{% url 'accounts:delete' %}" method="POST">
+                      {% csrf_token %}
+                      <input class='btn btn-outline-danger' type="submit" value='탈퇴'>
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+    </div> 
+    <div class="card-footer">
+      <p class="my-auto">마지막 활동 :
+        {{ user.last_login }}</p>
+    </div>
+  </div>
+
+  {% comment %} <h1>{{ user.username }}
     님의 페이지</h1>
   <h3>이름 :
     {{ user.last_name }}{{ user.first_name }}</h3>
   <h3>이메일 :
     {{ user.email }}</h3>
+  <br>
+
+  <div>
+    follower :
+    <span id="followers-count">{{ user.followers.all|length }}</span>
+    | following :
+    <span id="followings-count">{{ user.followings.all|length }}</span>
+  </div>
+  <br>
   {% if request.user.is_authenticated %}
     {% if request.user != user %}
-      <a class='btn btn-outline-dark' href="{% url 'accounts:follow' user.pk %}">
+      <form id="follow-form" data-user-id="{{ user.pk }}">
+        {% csrf_token %}
         {% if request.user in user.followers.all %}
-          팔로우 취소
+          <input class="btn btn-outline-dark" type="submit" value="Unfollow">
         {% else %}
-          팔로우
+          <input class="btn btn-outline-dark" type="submit" value="follow">
         {% endif %}
-      </a>
+      </form>
     {% else %}
       <div class="d-flex">
         <a class='btn btn-outline-dark' href="{% url 'accounts:update' %}">수정</a>
@@ -43,5 +115,52 @@
         </div>
       </div>
     {% endif %}
-  {% endif %}
+  {% endif %} {% endcomment %}
+
+  <!-- script -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const form = document.querySelector('#follow-form')
+    const csrftoken = document
+      .querySelector('[name=csrfmiddlewaretoken]')
+      .value
+
+      form
+      .addEventListener('submit', function (event) {
+        event.preventDefault()
+
+        const userId = event
+          .target
+          .dataset
+          .userId
+          axios({
+            method: 'post',
+            url: `/accounts/${userId}/follow/`,
+            headers: {
+              'X-CSRFToken': csrftoken
+            }
+          })
+          .then((response) => {
+            const isFollowed = response.data.is_followed
+            const followBtn = document.querySelector('#follow-form > input[type=submit]')
+            if (isFollowed === true) {
+              followBtn.value = 'Unfollow'
+            } else {
+              followBtn.value = 'follow'
+            }
+
+            const followersCountTag = document.querySelector('#followers-count')
+            const followingsCountTag = document.querySelector('#followings-count')
+            const followersCount = response.data.followers_count
+            const followingsCount = response.data.followings_count
+            followersCountTag.innerText = followersCount
+            followingsCountTag.innerText = followingsCount
+          })
+          .catch((error) => {
+            console.log(error.response)
+          })
+        })
+
+    // 팔로우 버튼을 클릭하면, 함수 실행
+  </script>
 {% endblock content %}
