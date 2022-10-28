@@ -99,8 +99,13 @@ def comments_create(request, pk):
         comment.review = review
         comment.user = request.user
         comment.save()
-    return redirect("reviews:detail", review.pk)
-
+        comments = []
+        for a in review.comment_set.all():
+            comments.append([a.content, a.user.username, a.create_at, a.user.id, request.user.id, a.id, a.review.id])
+        context = {
+            'comments':comments
+        }
+        return JsonResponse(context)
 
 @login_required
 def comments_delete(request, review_pk, comment_pk):
@@ -111,14 +116,14 @@ def comments_delete(request, review_pk, comment_pk):
 
 
 @login_required
-def likes(reqeust, review_pk):
+def likes(request, review_pk):
     review = Review.objects.get(pk=review_pk)
 
-    if reqeust.user in review.like_users.all():
-        review.like_users.remove(reqeust.user)
+    if request.user in review.like_users.all():
+        review.like_users.remove(request.user)
         is_Liked = False
     else:
-        review.like_users.add(reqeust.user)
+        review.like_users.add(request.user)
         is_Liked = True
     context = {
         'isLiked': is_Liked,

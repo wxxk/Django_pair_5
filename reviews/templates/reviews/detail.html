@@ -25,7 +25,7 @@
     </div>
 
     <!-- 좋아요 -->
-    <div>
+    <div class='d-flex align-items-center'>
       {% if request.user.is_authenticated %}
         {% if request.user in review.like_users.all %}
           <i id='review-like' data-review-id='{{ review.pk }}' class="btn bi bi-heart-fill text-danger"></i>
@@ -46,7 +46,7 @@
     <hr><br>
 
     <!-- 댓글 작성 -->
-    <form action="{% url 'reviews:comments_create' review.pk %}" method="POST">
+    <form id='comment-form' data-review-id='{{ review.pk }}'>
       {% csrf_token %}
       {% bootstrap_form comment_form %}
       <input type="submit" class="btn">
@@ -55,21 +55,26 @@
     <!-- 댓글 목록-->
     <h5>댓글목록</h5>
     <br>
-    {% for comment in comments %}
-      <div class="d-flex">
-        <h5 class='ms-2'>{{ comment.user }}</h5>
-
-        <p class='ms-2'>{{ comment.create_at }}</p>
-      </div>
-      <p class='ms-2'>{{ comment.content }}</p>
-      {% if request.user == comment.user %}
-        <form action="{% url 'reviews:comments_delete' review.pk comment.pk %}" method="POST">
-          {% csrf_token %}
-          <input type="submit" class="btn" value="삭제">
-        </form>
-      {% endif %}
-      <hr>
-    {% endfor %}
+    <div id='comments'>
+      {% for comment in comments %}
+        <div class="d-flex align-items-center">
+          <p class='ms-2 my-0' style='font-size:0.9rem;'>{{ comment.user }}</p>
+          <p class='ms-2 text-secondary my-0' style='font-size:0.7rem;'>{{ comment.create_at }}</p>
+        </div>
+        <div class='d-flex align-items-center'>
+          <p class='ms-2 my-0'>{{ comment.content }}</p>
+          {% if request.user == comment.user %}
+            <form class='mx-2' action="{% url 'reviews:comments_delete' review.pk comment.pk %}" method="POST">
+              {% csrf_token %}
+              <button class='btn p-0' type='submit'>
+                <i class="bi bi-x-square text-danger"></i>
+              </button>
+            </form>
+          {% endif %}
+        </div>
+        <hr>
+      {% endfor %}
+    </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
@@ -99,5 +104,86 @@
         likeCount.innerText = `${response.data.likeCount}개`
       })
     })
+  </script>
+  <script>
+    const commentForm = document.querySelector('#comment-form')
+    const csrftoken = document
+      .querySelector('[name=csrfmiddlewaretoken]')
+      .value
+      commentForm
+      .addEventListener('submit', function (event) {
+        event.preventDefault();
+        axios({
+          method: 'post',
+          url: `/reviews/${event.target.dataset.reviewId}/comments/`,
+          headers: {
+            'X-CSRFToken': csrftoken
+          },
+          data: new FormData(commentForm)
+        }).then(response => {
+          const comments = document.querySelector('#comments')
+          comments.replaceChildren()
+          for (comment of response.data.comments) {
+            const hr = document.createElement('hr')
+
+            const div1 = document.createElement('div')
+            div1
+              .classList
+              .add('d-flex', 'align-items-center')
+
+            const div2 = document.createElement('div')
+            div2
+              .classList
+              .add('d-flex', 'align-items-center')
+
+            const p1 = document.createElement('p')
+            p1
+              .classList
+              .add('ms-2', 'my-0')
+            p1.setAttribute('style', 'font-size:0.9rem;')
+            p1.innerText = `${comment[1]}`
+
+            const p2 = document.createElement('p')
+            p2
+              .classList
+              .add('ms-2', 'text-secondary', 'my-0')
+            p2.setAttribute('style', 'font-size:0.7rem;')
+            if (parseInt(new Date(comment[2]).getHours()) >= 12) {
+              p2.innerText = `${new Date(comment[2]).getFullYear()}년 ${new Date(comment[2]).getMonth() + 1}월 ${new Date(comment[2]).getDate()}일 ${parseInt(new Date(comment[2]).getHours()) - 12}:${new Date(comment[2]).getMinutes()} 오후`
+            } else {
+              p2.innerText = `${new Date(comment[2]).getFullYear()}년 ${new Date(comment[2]).getMonth() + 1}월 ${new Date(comment[2]).getDate()}일 ${new Date(comment[2]).getHours()}:${new Date(comment[2]).getMinutes()} 오전`
+            }
+
+            const p3 = document.createElement('p')
+            p3
+              .classList
+              .add('ms-2', 'my-0')
+            p3.innerText = `${comment[0]}`
+
+            div1.append(p1, p2)
+            div2.append(p3)
+            if (comment[3] === comment[4]) {
+              const form = document.createElement('form')
+              form
+                .classList
+                .add('mx-2')
+              form.setAttribute('action', `/reviews/${comment[6]}/comments/${comment[5]}/delete/`)
+              const button = document.createElement('button')
+              button
+                .classList
+                .add('btn', 'p-0')
+              const i = document.createElement('i')
+              i
+                .classList
+                .add('bi', 'bi-x-square', 'text-danger')
+              button.append(i)
+              form.append(button)
+              div2.append(form)
+            }
+            comments.append(div1, div2, hr)
+          }
+          commentForm.reset()
+        })
+      })
   </script>
 {% endblock content %}
