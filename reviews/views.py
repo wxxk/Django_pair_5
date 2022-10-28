@@ -69,8 +69,13 @@ def update(request, pk):
 @login_required
 def delete(request, pk):
     review = Review.objects.get(pk=pk)
-    review.delete()
-    return redirect("reviews:index")
+    if request.user == review.user:
+        review.delete()
+        return redirect("reviews:index")
+    else:
+        from django.http import HttpResponseForbidden
+
+        return HttpResponseForbidden
 
 
 def search(request):
@@ -101,11 +106,20 @@ def comments_create(request, pk):
         comment.save()
         comments = []
         for a in review.comment_set.all():
-            comments.append([a.content, a.user.username, a.create_at, a.user.id, request.user.id, a.id, a.review.id])
-        context = {
-            'comments':comments
-        }
+            comments.append(
+                [
+                    a.content,
+                    a.user.username,
+                    a.create_at,
+                    a.user.id,
+                    request.user.id,
+                    a.id,
+                    a.review.id,
+                ]
+            )
+        context = {"comments": comments}
         return JsonResponse(context)
+
 
 @login_required
 def comments_delete(request, review_pk, comment_pk):
