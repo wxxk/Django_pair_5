@@ -52,6 +52,8 @@ def detail(request, pk):
     user = get_user_model().objects.get(pk=pk)
     context = {
         "user": user,
+        'reviews': user.review_set.all(),
+        'comments': user.comment_set.all(),
     }
     return render(request, "accounts/detail.html", context)
 
