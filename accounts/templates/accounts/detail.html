@@ -63,24 +63,29 @@
     </div>
   </div>
 
-
   <div class="row">
     <div class="col-6">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
+          <h5 class="card-title">작성한 글</h5>
+          {% for review in reviews %}
+            <div class="d-flex">
+              <a class="card-text" href="{% url 'reviews:detail' review.pk %}">{{ review.title }}</a>
+              <p class='mx-2'>{{ review.created_at }}</p>
+            </div>
+          {% endfor %}
         </div>
       </div>
     </div>
     <div class="col-6">
       <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
+        <h5 class="card-title">작성한 댓글</h5>
+        {% for comment in comments %}
+          <div class="d-flex">
+            <a class="card-text" href="{% url 'reviews:detail' comment.review.pk %}">{{ comment.content }}</a>
+            <p class='mx-2'>{{ comment.create_at }}</p>
+          </div>
+        {% endfor %}
       </div>
     </div>
   </div>
