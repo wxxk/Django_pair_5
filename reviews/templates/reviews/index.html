@@ -4,11 +4,11 @@
   <h1>게시판</h1>
 
   <form class="search d-flex mb-5" role="search" action="{% url 'reviews:search' %}">
-    <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="search">
-    <button class="btn btn-outline-dark" type="submit">Search</button>
+    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+    <button class="btn btn-outline-dark" type="submit">검색</button>
   </form>
 
-  <table class="table text-center">
+  <table class="table text-center border-dark">
     <thead>
       <tr>
         <th scope="col">#</th>
@@ -26,7 +26,7 @@
           <td>{{ review.movie_name }}</td>
           <td>{{ review.get_grade_display  }}</td>
           <td>
-            <a href="{% url 'reviews:detail' review.pk %}">자세히</a>
+            <a class="detail-link" href="{% url 'reviews:detail' review.pk %}">자세히</a>
           </td>
         </tr>
       {% endfor %}

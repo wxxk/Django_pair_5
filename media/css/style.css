@@ -1,3 +1,9 @@
+body {
+  background-image: url(https://i.pinimg.com/736x/2d/67/f9/2d67f9834649b584682ab58606f5a27e.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 header {
   position: fixed;
   top:0;
@@ -12,6 +18,11 @@ header {
 .navbar-brand, .nav-link{
   color:white
 }
+.navbar-brand:hover, .nav-link:hover{
+  color: rgb(176, 116, 255);
+
+}
+
 
 .navbar-toggler{ 
   background-color: white;
@@ -48,9 +59,10 @@ h1 {
 }
 
 .card:hover {
-  width: 1000px;
-  height: 350px;
-  transition: 2s;
+  /* width: 1000px;
+  height: 350px; */
+  /* transform: rotateY(150deg); */
+  transition: 2s; 
 }
 
 .tbtr:hover{
@@ -62,4 +74,21 @@ h1 {
   width: 500px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.signup {
+  width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.create{
+  width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.detail-link:hover{
+  text-decoration: none;
+  color: rgb(150, 255, 118);
 }

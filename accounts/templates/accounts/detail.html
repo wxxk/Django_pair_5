@@ -4,7 +4,7 @@
   <div class="card">
     <div class="card-header">
       <h3>
-      {{ user.username }}님의 페이지</h3>
+        {{ user.username }}님의 페이지</h3>
     </div>
     <div class="card-body">
       <h5 class="card-title">이름 :
@@ -56,66 +56,33 @@
           </div>
         {% endif %}
       {% endif %}
-    </div> 
+    </div>
     <div class="card-footer">
       <p class="my-auto">마지막 활동 :
         {{ user.last_login }}</p>
     </div>
   </div>
 
-  {% comment %} <h1>{{ user.username }}
-    님의 페이지</h1>
-  <h3>이름 :
-    {{ user.last_name }}{{ user.first_name }}</h3>
-  <h3>이메일 :
-    {{ user.email }}</h3>
-  <br>
-
-  <div>
-    follower :
-    <span id="followers-count">{{ user.followers.all|length }}</span>
-    | following :
-    <span id="followings-count">{{ user.followings.all|length }}</span>
-  </div>
-  <br>
-  {% if request.user.is_authenticated %}
-    {% if request.user != user %}
-      <form id="follow-form" data-user-id="{{ user.pk }}">
-        {% csrf_token %}
-        {% if request.user in user.followers.all %}
-          <input class="btn btn-outline-dark" type="submit" value="Unfollow">
-        {% else %}
-          <input class="btn btn-outline-dark" type="submit" value="follow">
-        {% endif %}
-      </form>
-    {% else %}
-      <div class="d-flex">
-        <a class='btn btn-outline-dark' href="{% url 'accounts:update' %}">수정</a>
-        <button type="button" class="btn btn-outline-dark mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          탈퇴
-        </button>
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">정말 탈퇴하시겠습니까?</h1>
-              </div>
-              <div class="modal-body">
-                탈퇴된 계정은 복구할 수 없습니다.
-              </div>
-              <div class="modal-footer">
-                <form action="{% url 'accounts:delete' %}" method="POST">
-                  {% csrf_token %}
-                  <input class='btn btn-outline-danger' type="submit" value='탈퇴'>
-                </form>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
-              </div>
-            </div>
-          </div>
+  <div class="row">
+    <div class="col-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Special title treatment</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
         </div>
       </div>
-    {% endif %}
-  {% endif %} {% endcomment %}
+    </div>
+    <div class="col-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Special title treatment</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- script -->
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
