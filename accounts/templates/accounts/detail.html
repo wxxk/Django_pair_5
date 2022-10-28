@@ -63,6 +63,7 @@
     </div>
   </div>
 
+
   <div class="row">
     <div class="col-6">
       <div class="card">
@@ -88,46 +89,46 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script>
     const form = document.querySelector('#follow-form')
-    const csrftoken = document
-      .querySelector('[name=csrfmiddlewaretoken]')
-      .value
+    if (form) {
+      const csrftoken = document
+        .querySelector('[name=csrfmiddlewaretoken]')
+        .value
 
-      form
-      .addEventListener('submit', function (event) {
-        event.preventDefault()
+        form
+        .addEventListener('submit', function (event) {
+          event.preventDefault()
 
-        const userId = event
-          .target
-          .dataset
-          .userId
-          axios({
-            method: 'post',
-            url: `/accounts/${userId}/follow/`,
-            headers: {
-              'X-CSRFToken': csrftoken
-            }
+          const userId = event
+            .target
+            .dataset
+            .userId
+            axios({
+              method: 'post',
+              url: `/accounts/${userId}/follow/`,
+              headers: {
+                'X-CSRFToken': csrftoken
+              }
+            })
+            .then((response) => {
+              const isFollowed = response.data.is_followed
+              const followBtn = document.querySelector('#follow-form > input[type=submit]')
+              if (isFollowed === true) {
+                followBtn.value = 'Unfollow'
+              } else {
+                followBtn.value = 'follow'
+              }
+
+              const followersCountTag = document.querySelector('#followers-count')
+              const followingsCountTag = document.querySelector('#followings-count')
+              const followersCount = response.data.followers_count
+              const followingsCount = response.data.followings_count
+              followersCountTag.innerText = followersCount
+              followingsCountTag.innerText = followingsCount
+            })
+            .catch((error) => {
+              console.log(error.response)
+            })
           })
-          .then((response) => {
-            const isFollowed = response.data.is_followed
-            const followBtn = document.querySelector('#follow-form > input[type=submit]')
-            if (isFollowed === true) {
-              followBtn.value = 'Unfollow'
-            } else {
-              followBtn.value = 'follow'
-            }
-
-            const followersCountTag = document.querySelector('#followers-count')
-            const followingsCountTag = document.querySelector('#followings-count')
-            const followersCount = response.data.followers_count
-            const followingsCount = response.data.followings_count
-            followersCountTag.innerText = followersCount
-            followingsCountTag.innerText = followingsCount
-          })
-          .catch((error) => {
-            console.log(error.response)
-          })
-        })
-
-    // 팔로우 버튼을 클릭하면, 함수 실행
+    }
   </script>
 {% endblock content %}
