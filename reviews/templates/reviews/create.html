@@ -4,7 +4,7 @@
 {% block content %}
 
   <h1>CREATE</h1>
-  <form action="" method="POST" enctype="multipart/form-data">
+  <form action="" method="POST" enctype="multipart/form-data" class="create">
     {% csrf_token %}
     {% bootstrap_form form %}
     <input type="submit" class="btn btn-outline-dark" value="작성">

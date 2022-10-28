@@ -3,11 +3,11 @@
 {% block content %}
   <h1>검색결과</h1>
 
-  <form class="d-flex mb-5" role="search" action="{% url 'reviews:search' %}">
+  <form class="search d-flex mb-5" role="search" action="{% url 'reviews:search' %}">
     <input class="form-control me-2" type="search" placeholder="Search" name="search" aria-label="Search">
-    <button class="btn btn-outline-success" type="submit">Search</button>
+    <button class="btn btn-outline-dark" type="submit">검색</button>
   </form>
-  <hr>
+
   <table class="table text-center">
     <thead>
       <tr>

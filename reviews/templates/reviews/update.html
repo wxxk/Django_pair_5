@@ -7,8 +7,8 @@
   <form action="{% url 'reviews:update' review.pk %}" method="POST">
     {% csrf_token %}
     {% bootstrap_form form %}
-    <input class="btn" type="submit" value="수정">
-    <a href="{% url 'reviews:detail' review.pk %}" class="btn">뒤로가기</a>
+    <input class="btn btn-outline-dark" type="submit" value="수정">
+    <a href="{% url 'reviews:detail' review.pk %}" class="btn btn-outline-dark">뒤로가기</a>
   </form>
 
 {% endblock content %}

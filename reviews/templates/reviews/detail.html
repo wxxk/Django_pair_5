@@ -6,24 +6,26 @@
   <h1>DETAIL</h1>
   <div class="container border py-3">
     <div class="d-flex justify-content-between">
-      <h3>{{ review.pk }}번째 글</h3>
+      <h5 class="align-self-center mb-0">{{ review.pk }}번째 글</h5>
       <h3>{{ review.title }}</h3>
-      <h3>
+      <h5 class="align-self-center">
         <a href="{% url 'accounts:detail' review.user.pk %}">{{ review.user }}</a>
-      </h3>
+      </h5>
     </div>
     <hr>
-    <div class="border">
+    <div class="p-3 border">
       <h3 class="text-center">{{ review.movie_name }}</h3>
       {% if review.image %}
         <img src="{{ review.image.url}}" alt="">
       {% endif %}
     </div>
     <div class="container border my-2 pt-2">
-      <p>{{ review.content }}</p>
+      <p>내용 :
+        {{ review.content }}</p>
     </div>
     <div class="container border my-2 pt-2">
-      <p>평점:{{ review.get_grade_display }}</p>
+      <p>평점 :
+        {{ review.get_grade_display }}</p>
     </div>
 
     <!-- 좋아요 -->
@@ -51,7 +53,7 @@
     <form id='comment-form' data-review-id='{{ review.pk }}'>
       {% csrf_token %}
       {% bootstrap_form comment_form %}
-      <input type="submit" class="btn">
+      <input type="submit" class="btn btn-outline-dark" value="작성">
     </form>
     <hr><br>
     <!-- 댓글 목록-->

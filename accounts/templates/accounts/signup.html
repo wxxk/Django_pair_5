@@ -2,7 +2,7 @@
 {% load django_bootstrap5 %}
 {% block content %}
   <h1>SIGNUP</h1>
-  <form action="" method="POST">
+  <form action="" method="POST" class="signup">
     {% csrf_token %}
     {% bootstrap_form form%}
     <input class="btn btn-outline-dark" type="submit" value="회원가입">
