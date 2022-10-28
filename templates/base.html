@@ -1,4 +1,5 @@
 {% load django_bootstrap5 %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,39 +18,42 @@
         font-family: 'Noto Sans KR', sans-serif;
       }
     </style>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
   </head>
 
   <body>
-    <nav class="navbar navbar-expand-lg bg-light">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'reviews:index' %}">게시판</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            {% if request.user.is_authenticated %}
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'reviews:create' %}">글 작성</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'accounts:detail' request.user.pk %}">마이페이지</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'accounts:logout' %}">로그아웃</a>
-              </li>
-            {% else %}
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'accounts:signup' %}">회원가입</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'accounts:login' %}">로그인</a>
-              </li>
-            {% endif %}
-          </ul>
+    <header>
+      <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="{% url 'reviews:index' %}">게시판</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'reviews:create' %}">글 작성</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'accounts:detail' request.user.pk %}">마이페이지</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'accounts:logout' %}">로그아웃</a>
+                </li>
+              {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'accounts:signup' %}">회원가입</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'accounts:login' %}">로그인</a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </header>
     <div class="container my-5">
       {% block content %}{% endblock content %}
     </div>

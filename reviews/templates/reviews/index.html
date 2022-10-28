@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1 class="text-center mb-5">게시판</h1>
+  <h1>게시판</h1>
 
-  <form class="d-flex mb-5" role="search" action="{% url 'reviews:search' %}">
-    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+  <form class="search d-flex mb-5" role="search" action="{% url 'reviews:search' %}">
+    <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="search">
     <button class="btn btn-outline-dark" type="submit">Search</button>
   </form>
-  <hr>
+
   <table class="table text-center">
     <thead>
       <tr>
@@ -18,9 +18,9 @@
         <th scope="col">비고</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="table-group-divider">
       {% for review in reviews %}
-        <tr>
+        <tr class="tbtr">
           <th scope="row">{{ review.pk }}</th>
           <td>{{ review.title }}</td>
           <td>{{ review.movie_name }}</td>
