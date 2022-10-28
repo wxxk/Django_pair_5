@@ -9,11 +9,11 @@ from django.conf import settings
 # Create your models here.
 class Review(models.Model):
     star_grade = (
-        ("1", "★"),
-        ("2", "★★"),
-        ("3", "★★★"),
-        ("4", "★★★★"),
-        ("5", "★★★★★"),
+        ("1", "🤩"),
+        ("2", "🤩🤩"),
+        ("3", "🤩🤩🤩"),
+        ("4", "🤩🤩🤩🤩"),
+        ("5", "🤩🤩🤩🤩🤩"),
     )
 
     title = models.CharField(max_length=100)
