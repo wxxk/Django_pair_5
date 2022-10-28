@@ -99,8 +99,13 @@ def comments_create(request, pk):
         comment.review = review
         comment.user = request.user
         comment.save()
-    return redirect("reviews:detail", review.pk)
-
+        comments = []
+        for a in review.comment_set.all():
+            comments.append([a.content, a.user.username, a.create_at, a.user.id, request.user.id, a.id, a.review.id])
+        context = {
+            'comments':comments
+        }
+        return JsonResponse(context)
 
 @login_required
 def comments_delete(request, review_pk, comment_pk):
