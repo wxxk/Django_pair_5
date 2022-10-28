@@ -1,0 +1,96 @@
+body {
+  background-image: url(https://i.pinimg.com/736x/2d/67/f9/2d67f9834649b584682ab58606f5a27e.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
+.nav-color {
+  background-color: rgba(0, 0, 0, 0.8) ;
+}
+
+.navbar-brand, .nav-link{
+  color:white
+}
+.navbar-brand:hover, .nav-link:hover{
+  color: rgb(176, 116, 255);
+
+}
+
+
+.navbar-toggler{ 
+  background-color: white;
+  color: white
+}
+
+.navbar-toggler:hover{
+  border: 2px solid white
+}
+
+h1 {
+  margin-top: 6rem;
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.search {
+  width: 500px;
+  float: right
+}
+
+.box {
+  width: 1500px;
+}
+
+.card {
+  margin-top: 10rem;
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
+  height: 300px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  text-align: center;
+}
+
+.ellipsis {
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow: ellipsis;
+
+}
+
+
+.card:hover {
+  /* width: 1000px;
+  height: 350px; */
+  /* transform: rotateY(150deg); */
+  transition: 2s; 
+}
+
+.tbtr:hover{
+  background-color: gray;
+  color: white
+}
+
+.login {
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.signup {
+  width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.create{
+  width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.detail-link:hover{
+  text-decoration: none;
+  color: rgb(150, 255, 118);
+}
