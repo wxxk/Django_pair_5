@@ -5,10 +5,10 @@
 
   <form class="search d-flex mb-5" role="search" action="{% url 'reviews:search' %}">
     <input class="form-control me-2" type="search" placeholder="Search" name="search" aria-label="Search">
-    <button class="btn btn-outline-dark" type="submit">검색</button>
+    <button class="btn btn-outline-dark" type="submit">Search</button>
   </form>
 
-  <table class="table text-center">
+  <table class="table text-center border-dark">
     <thead>
       <tr>
         <th scope="col">#</th>
@@ -18,7 +18,7 @@
         <th scope="col">비고</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="table-group-divider">
       {% for review in search_list %}
         <tr>
           <th scope="row">{{ review.pk }}</th>

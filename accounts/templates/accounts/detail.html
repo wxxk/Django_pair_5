@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
 {% block content %}
-  <div class="card">
+  <div class="card h-auto">
     <div class="card-header">
       <h3>
         {{ user.username }}님의 페이지</h3>
@@ -11,11 +11,41 @@
         {{ user.last_name }}{{ user.first_name }}</h5>
       <p class="card-text">이메일 :
         {{ user.email }}</p>
-      <div class='my-3'>
+      <div class="my-3">
         follower :
         <span id="followers-count">{{ user.followers.all|length }}</span>
         | following :
         <span id="followings-count">{{ user.followings.all|length }}</span>
+        <div class="row">
+          <div class="col-6 h-100">
+            <div class="card w-auto h-auto mt-3">
+              <div class="card-body">
+                <h5 class="card-title mb-4">작성한 글</h5>
+                {% for review in reviews %}
+                  <div class="d-flex justify-content-between">
+                    <a class="ellipsis card-text" href="{% url 'reviews:detail' review.pk %}">{{ review.title }}</a>
+                    <p class='mx-2 my-0'>{{ review.created_at }}</p>
+                  </div>
+                  <hr>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="col-6 h-100">
+            <div class="card w-auto h-auto mt-3">
+              <div class="card-body">
+                <h5 class="card-title mb-4">작성한 댓글</h5>
+                {% for comment in comments %}
+                  <div class="d-flex justify-content-between">
+                    <a class="ellipsis card-text" href="{% url 'reviews:detail' comment.review.pk %}">{{ comment.content }}</a>
+                    <p class='mx-2 my-0'>{{ comment.create_at }}</p>
+                  </div>
+                  <hr>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {% if request.user.is_authenticated %}
@@ -60,33 +90,6 @@
     <div class="card-footer">
       <p class="my-auto">마지막 활동 :
         {{ user.last_login }}</p>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-6">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">작성한 글</h5>
-          {% for review in reviews %}
-            <div class="d-flex">
-              <a class="card-text" href="{% url 'reviews:detail' review.pk %}">{{ review.title }}</a>
-              <p class='mx-2'>{{ review.created_at }}</p>
-            </div>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-    <div class="col-6">
-      <div class="card">
-        <h5 class="card-title">작성한 댓글</h5>
-        {% for comment in comments %}
-          <div class="d-flex">
-            <a class="card-text" href="{% url 'reviews:detail' comment.review.pk %}">{{ comment.content }}</a>
-            <p class='mx-2'>{{ comment.create_at }}</p>
-          </div>
-        {% endfor %}
-      </div>
     </div>
   </div>
 
