@@ -52,18 +52,23 @@ def detail(request, pk):
 @login_required
 def update(request, pk):
     review = Review.objects.get(pk=pk)
-    if request.method == "POST":
-        form = ReviewForm(request.POST, instance=review)
-        if form.is_valid():
-            form.save()
-            return redirect("reviews:detail", review.pk)
+    if request.user == review.user:
+        if request.method == "POST":
+            form = ReviewForm(request.POST, instance=review)
+            if form.is_valid():
+                form.save()
+                return redirect("reviews:detail", review.pk)
+        else:
+            form = ReviewForm(instance=review)
+        context = {
+            "form": form,
+            "review": review,
+        }
+        return render(request, "reviews/update.html", context)
     else:
-        form = ReviewForm(instance=review)
-    context = {
-        "form": form,
-        "review": review,
-    }
-    return render(request, "reviews/update.html", context)
+        from django.http import HttpResponseForbidden
+
+        return HttpResponseForbidden
 
 
 @login_required
