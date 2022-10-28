@@ -5,6 +5,7 @@
   <form action="" method="POST">
     {% csrf_token %}
     {% bootstrap_form form %}
-    <input type="submit">
+    <a class="btn btn-outline-dark" href="{% url 'accounts:password_update' %}">비밀번호 변경</a>
+    <input class="btn btn-outline-dark" type="submit">
   </form>
 {% endblock content %}

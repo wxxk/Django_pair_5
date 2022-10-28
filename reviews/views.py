@@ -111,17 +111,14 @@ def comments_delete(request, review_pk, comment_pk):
 
 
 @login_required
-def likes(reqeust, review_pk):
+def likes(request, review_pk):
     review = Review.objects.get(pk=review_pk)
 
-    if reqeust.user in review.like_users.all():
-        review.like_users.remove(reqeust.user)
+    if request.user in review.like_users.all():
+        review.like_users.remove(request.user)
         is_Liked = False
     else:
-        review.like_users.add(reqeust.user)
+        review.like_users.add(request.user)
         is_Liked = True
-    context = {
-        'isLiked': is_Liked,
-        'likeCount': review.like_users.count()
-    }
+    context = {"isLiked": is_Liked, "likeCount": review.like_users.count()}
     return JsonResponse(context)

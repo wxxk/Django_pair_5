@@ -8,14 +8,16 @@
     <div class="d-flex justify-content-between">
       <h3>{{ review.pk }}번째 글</h3>
       <h3>{{ review.title }}</h3>
-      <h3>{{ review.user }}</h3>
+      <h3>
+        <a href="{% url 'accounts:detail' review.user.pk %}">{{ review.user }}</a>
+      </h3>
     </div>
     <hr>
     <div class="border">
+      <h3 class="text-center mt-3">{{ review.movie_name }}</h3>
       {% if review.image %}
         <img src="{{ review.image.url}}" alt="">
       {% endif %}
-      <h3>{{ review.movie_name }}</h3>
     </div>
     <div class="container border my-2 pt-2">
       <p>{{ review.content }}</p>
@@ -36,12 +38,12 @@
       <span id='like-count'>{{ review.like_users.count }}개</span>
     </div>
     <div class="d-flex ms-2">
-      <a class="btn" href="{% url 'reviews:update' review.pk %}">수정하기</a>
+      <a class="btn btn-outline-dark me-2" href="{% url 'reviews:update' review.pk %}">수정하기</a>
       <form action="{% url 'reviews:delete' review.pk %}" method="POST">
         {% csrf_token %}
-        <input type="submit" class="btn" value="삭제하기">
+        <input type="submit" class="btn btn-outline-dark me-2" value="삭제하기">
       </form>
-      <a class="btn" href="{% url 'reviews:index' %}">뒤로가기</a>
+      <a class="btn btn-outline-dark me-2" href="{% url 'reviews:index' %}">뒤로가기</a>
     </div>
     <hr><br>
 
@@ -49,7 +51,7 @@
     <form action="{% url 'reviews:comments_create' review.pk %}" method="POST">
       {% csrf_token %}
       {% bootstrap_form comment_form %}
-      <input type="submit" class="btn">
+      <input type="submit" class="btn btn-outline-dark">
     </form>
     <hr><br>
     <!-- 댓글 목록-->
