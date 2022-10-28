@@ -38,12 +38,12 @@
       <span id='like-count'>{{ review.like_users.count }}개</span>
     </div>
     <div class="d-flex ms-2">
-      <a class="btn" href="{% url 'reviews:update' review.pk %}">수정하기</a>
+      <a class="btn btn-outline-dark me-2" href="{% url 'reviews:update' review.pk %}">수정하기</a>
       <form action="{% url 'reviews:delete' review.pk %}" method="POST">
         {% csrf_token %}
-        <input type="submit" class="btn" value="삭제하기">
+        <input type="submit" class="btn btn-outline-dark me-2" value="삭제하기">
       </form>
-      <a class="btn" href="{% url 'reviews:index' %}">뒤로가기</a>
+      <a class="btn btn-outline-dark me-2" href="{% url 'reviews:index' %}">뒤로가기</a>
     </div>
     <hr><br>
 
